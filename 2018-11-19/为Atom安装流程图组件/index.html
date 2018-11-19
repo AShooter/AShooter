@@ -118,7 +118,8 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://ashooter.github.io/img/atom-preview.png">
 <meta property="og:image" content="http://ashooter.github.io/img/atom-searching.png">
-<meta property="og:updated_time" content="2018-11-19T02:03:26.093Z">
+<meta property="og:image" content="http://ashooter.github.io/img/preview-test.png">
+<meta property="og:updated_time" content="2018-11-19T02:21:43.462Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="为Atom安装流程图组件">
 <meta name="twitter:description" content="Atom是一款很便捷强大的Markdown编辑器，它的强大来源于大量的第三方packages，但是有些很常用的package在默认状态下是没有安装的，需要我们用到的时候自己安装。比如 Atom对流程图的支持就需要我们安装插件来实现。">
@@ -384,7 +385,7 @@
                 
               
 
-              <time title="创建时间：2018-11-19 09:41:38 / 修改时间：10:03:26" itemprop="dateCreated datePublished" datetime="2018-11-19T09:41:38+08:00">2018-11-19</time>
+              <time title="创建时间：2018-11-19 09:41:38 / 修改时间：10:21:43" itemprop="dateCreated datePublished" datetime="2018-11-19T09:41:38+08:00">2018-11-19</time>
             
 
             
@@ -443,12 +444,14 @@
         <p>Atom是一款很便捷强大的Markdown编辑器，它的强大来源于大量的第三方<code>packages</code>，但是有些很常用的package在默认状态下是没有安装的，需要我们用到的时候自己安装。比如<strong> Atom对流程图的支持</strong>就需要我们安装插件来实现。</p>
 <a id="more"></a>
 <p>Atom流程图插件的名字是<code>markdown-preview-enhanced</code>,我们可以通过<a href="https://atom.io/packages/markdown-preview-enhanced" target="_blank" rel="noopener">官方文档</a>了解关于它的更多详细介绍。</p>
-<p>安装步骤如下：</p>
+<h3 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h3><p>安装步骤如下：</p>
 <ol>
 <li>打开Atom，按照<code>file --&gt; setting --&gt; install</code>的路径进入插件查找与安装页面。<br><img src="/img/atom-preview.png" alt="进入安装页面"></li>
 <li>在<strong>搜索栏</strong>中输入<code>markdown-preview-enhanced</code>，查找插件<br><img src="/img/atom-searching.png" alt="searching"></li>
 <li>点击<code>install</code>进行安装</li>
 </ol>
+<h3 id="效果测试"><a href="#效果测试" class="headerlink" title="效果测试"></a>效果测试</h3><p><img src="/img/preview-test.png" alt="test"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&apos;&apos;&apos;flow #使用时,请把&apos;号更换为`</span><br><span class="line">st=&gt;start: start</span><br><span class="line">e=&gt;end: end</span><br><span class="line">op=&gt;operation: My operation</span><br><span class="line">cond=&gt;condition: Sure?</span><br><span class="line"></span><br><span class="line">st-&gt;op-&gt;cond</span><br><span class="line">cond(yes)-&gt;e</span><br><span class="line">cond(no)-&gt;op</span><br><span class="line">&apos;&apos;&apos;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -542,8 +545,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -625,6 +637,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装步骤"><span class="nav-number">1.</span> <span class="nav-text">安装步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#效果测试"><span class="nav-number">2.</span> <span class="nav-text">效果测试</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
