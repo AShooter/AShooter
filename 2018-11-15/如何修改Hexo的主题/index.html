@@ -116,14 +116,14 @@
 <meta property="og:site_name" content="BiuBiu">
 <meta property="og:description" content="学习目标 这是利用Hexo写博客以来的第一篇正儿八经的文章,就记一记眼下正在做的事情:给Hexo更换主题。 文章主要内容是讲述更换主题的操作步骤，从本文你可以了解到：  如何获取一个Hexo的主题 如何安装和配置主题 如何设置菜单、分类、标签、关于我等内容">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://ashooter.github.io/2018-11-15/如何修改Hexo的主题/hexo.png">
-<meta property="og:image" content="http://ashooter.github.io/2018-11-15/如何修改Hexo的主题/Next.png">
-<meta property="og:image" content="http://ashooter.github.io/2018-11-15/如何修改Hexo的主题/menu.png">
+<meta property="og:image" content="http://ashooter.github.io/如何修改Hexo的主题/hexo.png">
+<meta property="og:image" content="http://ashooter.github.io/2018-11-15/如何修改Hexo的主题/如何修改Hexo的主题/Next.png">
+<meta property="og:image" content="http://ashooter.github.io/menu.png">
 <meta property="og:updated_time" content="2018-11-16T03:24:53.413Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何修改Hexo的主题">
 <meta name="twitter:description" content="学习目标 这是利用Hexo写博客以来的第一篇正儿八经的文章,就记一记眼下正在做的事情:给Hexo更换主题。 文章主要内容是讲述更换主题的操作步骤，从本文你可以了解到：  如何获取一个Hexo的主题 如何安装和配置主题 如何设置菜单、分类、标签、关于我等内容">
-<meta name="twitter:image" content="http://ashooter.github.io/2018-11-15/如何修改Hexo的主题/hexo.png">
+<meta name="twitter:image" content="http://ashooter.github.io/如何修改Hexo的主题/hexo.png">
 
 
 
@@ -464,7 +464,7 @@
 <a id="more"></a>
 <h2 id="Hexo主题的获取与安装"><a href="#Hexo主题的获取与安装" class="headerlink" title="Hexo主题的获取与安装"></a>Hexo主题的获取与安装</h2><hr>
 <p>Hexo搭建完成之后，默认主题是这样的：</p>
-<p><img src="/2018-11-15/如何修改Hexo的主题/hexo.png" alt="默认主题"></p>
+<p><img src="/如何修改Hexo的主题/hexo.png" alt="默认主题"></p>
 <p>想要修改这个主题，我们可以去<a href="https://hexo.io/themes/" target="_blank" rel="noopener">Hexo的主题市场</a>选择一个自己喜欢的主题。</p>
 <p>我选择了简洁干净的<a href="https://github.com/theme-next/hexo-theme-next" target="_blank" rel="noopener">NexT主题</a></p>
 <p>按照GitHub中该NexT项目的Installation执行安装：</p>
@@ -481,7 +481,7 @@ _config.yml  node_modules  package.json  public  scaffolds  source  themes
 <pre><code>hexo g
 hexo d
 </code></pre><p>安装并启用NexT主题之后，我的博客变了模样：</p>
-<p><img src="/2018-11-15/如何修改Hexo的主题/Next.png" alt="NexT"></p>
+<p><img src="如何修改Hexo的主题/Next.png" alt="NexT"></p>
 <h2 id="设置菜单"><a href="#设置菜单" class="headerlink" title="设置菜单"></a>设置菜单</h2><hr>
 <p>在 Hexo 中有两份主要的配置文件，其名称都是 _config.yml。 其中，一份位于站点根目录下，主要包含 Hexo 本身的配置；另一份位于主题目录下，这份配置由主题作者提供，主要用于配置主题相关的选项。</p>
 <p>为了描述方便，在以下说明中，将前者称为 <em>站点配置文件</em>， 后者称为 <em>主题配置文件</em>。<br>接下来，我们为新的主题配置菜单，菜单配置一般包括三个部分：</p>
@@ -497,7 +497,7 @@ hexo d
   about: /about
   categories: /categories
   tags: /tags
-</code></pre><p>提交修改,重新deploy后,由于还没有相应的页面,所以虽然在首页上出现了相应的菜单,但是点击链接确实404页面。<br><img src="/2018-11-15/如何修改Hexo的主题/menu.png" alt="添加菜单项之后"></p>
+</code></pre><p>提交修改,重新deploy后,由于还没有相应的页面,所以虽然在首页上出现了相应的菜单,但是点击链接确实404页面。<br><img src="/menu.png" alt="添加菜单项之后"></p>
 <h3 id="创建存档、分类、标签等页面"><a href="#创建存档、分类、标签等页面" class="headerlink" title="创建存档、分类、标签等页面"></a>创建存档、分类、标签等页面</h3><p>以创建标签页面为例：</p>
 <p><strong> Step1 新建页面</strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> your-hexo-site</span><br><span class="line">$ hexo new page tags</span><br></pre></td></tr></table></figure></p>
 <p><strong>Step2 设置页面类型</strong></p>
@@ -617,7 +617,7 @@ hexo d
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-count">4</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -632,7 +632,9 @@ hexo d
                     
                       
                     
-                    <span class="site-state-item-count">1</span>
+                      
+                    
+                    <span class="site-state-item-count">2</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -651,7 +653,13 @@ hexo d
                     
                       
                     
-                    <span class="site-state-item-count">3</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
