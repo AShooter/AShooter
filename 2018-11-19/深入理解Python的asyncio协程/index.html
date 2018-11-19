@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="认识asyncioasyncio是新晋的Python标准库，在Python3.4中被引入。它的主要作用是简化Python的并发程序编写，利用asyncio库，你可以使用简单的async/await语法进行并发代码编写。asyncio是许多Python异步框架的基础，这些异步框架用于实现 高性能网络和Web服务、数据库连接库、任务分发队列 等功能。asyncio并不万能，但能很好的解决 IO瓶颈 对">
+<meta name="keywords" content="Python,asyncio,协程,coroutine">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解Python asyncio">
+<meta property="og:url" content="http://ashooter.github.io/2018-11-19/深入理解Python的asyncio协程/index.html">
+<meta property="og:site_name" content="BiuBiu">
+<meta property="og:description" content="认识asyncioasyncio是新晋的Python标准库，在Python3.4中被引入。它的主要作用是简化Python的并发程序编写，利用asyncio库，你可以使用简单的async/await语法进行并发代码编写。asyncio是许多Python异步框架的基础，这些异步框架用于实现 高性能网络和Web服务、数据库连接库、任务分发队列 等功能。asyncio并不万能，但能很好的解决 IO瓶颈 对">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-11-19T09:14:23.315Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入理解Python asyncio">
+<meta name="twitter:description" content="认识asyncioasyncio是新晋的Python标准库，在Python3.4中被引入。它的主要作用是简化Python的并发程序编写，利用asyncio库，你可以使用简单的async/await语法进行并发代码编写。asyncio是许多Python异步框架的基础，这些异步框架用于实现 高性能网络和Web服务、数据库连接库、任务分发队列 等功能。asyncio并不万能，但能很好的解决 IO瓶颈 对">
+
+
+
+
+
+
+  <link rel="canonical" href="http://ashooter.github.io/2018-11-19/深入理解Python的asyncio协程/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>深入理解Python asyncio | BiuBiu</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BiuBiu</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Do something amazing.</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ashooter.github.io/2018-11-19/深入理解Python的asyncio协程/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="MingQian">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BiuBiu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">深入理解Python asyncio
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-11-19 10:49:37 / 修改时间：17:14:23" itemprop="dateCreated datePublished" datetime="2018-11-19T10:49:37+08:00">2018-11-19</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="认识asyncio"><a href="#认识asyncio" class="headerlink" title="认识asyncio"></a>认识asyncio</h2><p>asyncio是新晋的Python标准库，在Python3.4中被引入。它的主要作用是简化Python的<strong>并发</strong>程序编写，利用<strong>asyncio</strong>库，你可以使用简单的<code>async/await</code>语法进行并发代码编写。<br>asyncio是许多Python异步框架的基础，这些异步框架用于实现 <strong>高性能网络和Web服务</strong>、<strong>数据库连接库</strong>、<strong>任务分发队列</strong> 等功能。<br>asyncio并不万能，但能很好的解决 <strong>IO瓶颈</strong> 对代码性能的影响，十分适合 <strong>高阶（high-level）网络编程</strong> 。</p>
+<a id="more"></a>
+<p>asyncio提供了一系列 <strong>高阶（high-level）</strong> API，能够：</p>
+<ul>
+<li>并发执行Python协程（coroutines），且能够对执行过程 <strong>完全控制</strong></li>
+<li>执行 <strong>网络IO</strong> 和 <strong>IPC（进程间通信）</strong> （perform network IO and IPC）<ul>
+<li><small>备注：IPC（Inter-Process Communication，进程间通信</small></li>
+</ul>
+</li>
+<li>控制 <strong>子进程</strong>( subprocesses)</li>
+<li>利用 <strong>队列</strong>(queue)分发任务（Task）</li>
+<li><strong>同步</strong>(synchronize)并发代码</li>
+</ul>
+<p>另外，asyncio同样提供了一些 <strong>底层</strong> API,主要针对Python库（library）开发者和框架(framework)开发者,能够：</p>
+<ul>
+<li>创建和管理 <strong>事件循环（event loop）</strong>，为 <strong>网络编程</strong> 、 <strong>运行子进程</strong>、<strong>处理系统消息（OS siginals）</strong> 等提供 <strong>（asynchronous）异步API</strong></li>
+<li>利用 <strong>transports类</strong> 实现高效协议</li>
+<li>利用<code>async/await</code>语法连接基于 <strong>回调</strong> 的库和代码。</li>
+</ul>
+<h2 id="利用asyncio并发执行协程"><a href="#利用asyncio并发执行协程" class="headerlink" title="利用asyncio并发执行协程"></a>利用asyncio并发执行协程</h2><h3 id="认识协程"><a href="#认识协程" class="headerlink" title="认识协程"></a>认识协程</h3><p>协程（coroutines）通过<code>async/await</code>定义。下面的代码片段是一个简单的协程的例子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">  print(<span class="string">"hello"</span>)</span><br><span class="line">  <span class="keyword">await</span> asyncio.sleep(<span class="number">1</span>)</span><br><span class="line">  print(<span class="string">"world"</span>)</span><br></pre></td></tr></table></figure></p>
+<p>上例中的 <code>main</code> 解释我们定义的<code>协程</code> 。代码的功能很简单：</p>
+<p><div id="flowchart-0" class="flow-chart"></div><br>我们在交互环境(Python3.7)下执行以上代码，看看效果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; import asyncio</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; async def main():</span><br><span class="line">...     <span class="built_in">print</span>(<span class="string">"hello"</span>)</span><br><span class="line">...     await asyncio.sl</span><br><span class="line">...     <span class="built_in">print</span>(<span class="string">"world"</span>)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; asyncio.run(main())</span><br><span class="line">hello</span><br><span class="line">world</span><br></pre></td></tr></table></figure>
+<p>需要注意的是：像执行普通代码一样直接调用<code>main()</code>并不会执行。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; main()</span><br><span class="line">&lt;coroutine object main at 0x0000000002C97848&gt;</span><br></pre></td></tr></table></figure></p>
+<p>可见，执行<code>main()</code>返回的是一个<code>coroutine对象</code>的句柄。</p>
+<p>实际上，asyncio提供了三种执行<code>协程</code>的机制：</p>
+<ul>
+<li>如上面的例子所示，使用<code>asyncio.run()</code>执行最顶层的入口函数<code>main()</code>。</li>
+<li>等待一个<code>协程</code>。这是在一个<code>协程</code>中调用<code>另一协程</code>的方式。如下是一个示例：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> time</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">say_after</span><span class="params">(delay,what)</span>:</span></span><br><span class="line">        <span class="keyword">await</span> asyncio.sleep(delay)</span><br><span class="line">        print(what)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">        print(<span class="string">f"started at <span class="subst">&#123;time.strftime(<span class="string">'%X'</span>)&#125;</span>"</span>)</span><br><span class="line">        <span class="keyword">await</span> say_after(<span class="number">1</span>,<span class="string">"hello"</span>)</span><br><span class="line">        <span class="keyword">await</span> say_after(<span class="number">2</span>,<span class="string">"world"</span>)</span><br><span class="line">        print(<span class="string">f"finished at <span class="subst">&#123;time.strftime(<span class="string">'%X'</span>)&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>asyncio.run(main())</span><br><span class="line">started at <span class="number">16</span>:<span class="number">47</span>:<span class="number">10</span></span><br><span class="line">hello</span><br><span class="line">world</span><br><span class="line">finished at <span class="number">16</span>:<span class="number">47</span>:<span class="number">13</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>执行耗时 <strong>3秒</strong></p>
+<ul>
+<li>使用<code>asyncio.create_task()</code>将<code>协程</code>作为<code>asyncio任务</code><br>我们修改以上的例程，<strong>并发执行</strong> 两个<code>say_after</code>协程。<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    task1 = asyncio.create_task(say_after(<span class="number">1</span>,<span class="string">"hello"</span>))</span><br><span class="line">    task2 = asyncio.create_task(say_after(<span class="number">2</span>,<span class="string">"world"</span>))</span><br><span class="line">    print(<span class="string">f"started at <span class="subst">&#123;time.strftime(<span class="string">'%X'</span>)&#125;</span>"</span>)</span><br><span class="line">    <span class="keyword">await</span> task1</span><br><span class="line">    <span class="keyword">await</span> task2</span><br><span class="line">    print(<span class="string">f"finished at <span class="subst">&#123;time.strftime(<span class="string">'%X'</span>)&#125;</span>"</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>执行<code>asyncio.run(main())</code>,结果如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">started at 17:01:34</span><br><span class="line">hello</span><br><span class="line">world</span><br><span class="line">finished at 17:01:36</span><br></pre></td></tr></table></figure></p>
+<p><strong>耗时2秒</strong></p>
+<p><script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.7/raphael.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/flowchart/1.6.5/flowchart.min.js"></script><textarea id="flowchart-0-code" style="display: none">s=>start: 开始
+op1=>operation: 打印“hello”
+op2=>operation: 沉睡1秒
+op3=>operation: 打印“world”
+e=>end: 等待1秒
+
+s(right)->op1(right)->op2(right)->op3(right)->e</textarea><textarea id="flowchart-0-options" style="display: none">{"scale":1,"line-width":2,"line-length":50,"text-margin":10,"font-size":12}</textarea><script>  var code = document.getElementById("flowchart-0-code").value;  var options = JSON.parse(decodeURIComponent(document.getElementById("flowchart-0-options").value));  var diagram = flowchart.parse(code);  diagram.drawSVG("flowchart-0", options);</script></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/asyncio/" rel="tag"># asyncio</a>
+          
+            <a href="/tags/协程/" rel="tag"># 协程</a>
+          
+            <a href="/tags/coroutine/" rel="tag"># coroutine</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018-11-19/为Atom安装流程图组件/" rel="next" title="为Atom安装流程图组件">
+                <i class="fa fa-chevron-left"></i> 为Atom安装流程图组件
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">MingQian</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#认识asyncio"><span class="nav-number">1.</span> <span class="nav-text">认识asyncio</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#利用asyncio并发执行协程"><span class="nav-number">2.</span> <span class="nav-text">利用asyncio并发执行协程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#认识协程"><span class="nav-number">2.1.</span> <span class="nav-text">认识协程</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MingQian</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v6.5.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.5.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
