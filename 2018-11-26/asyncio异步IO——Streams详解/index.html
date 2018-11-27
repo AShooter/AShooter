@@ -108,15 +108,18 @@
 
 
 
-  <meta name="keywords" content="Python,asyncio,stream">
+  <meta name="description" content="前言本文翻译自python3.7官方文档——asyncio-stream,译者马鸣谦,邮箱 1612557569@qq.com。转载请注明出处。 数据流（Streams）数据流（Streams）是用于处理网络连接的高阶异步/等待就绪(async/await-ready)原语,可以在不使用回调和底层传输协议的情况下发送和接收数据。 以下是一个用asyncio实现的TCP回显客户端：123456789">
+<meta name="keywords" content="Python,asyncio,stream">
 <meta property="og:type" content="article">
 <meta property="og:title" content="asyncio异步IO——Streams详解">
 <meta property="og:url" content="http://ashooter.github.io/2018-11-26/asyncio异步IO——Streams详解/index.html">
 <meta property="og:site_name" content="BiuBiu">
+<meta property="og:description" content="前言本文翻译自python3.7官方文档——asyncio-stream,译者马鸣谦,邮箱 1612557569@qq.com。转载请注明出处。 数据流（Streams）数据流（Streams）是用于处理网络连接的高阶异步/等待就绪(async/await-ready)原语,可以在不使用回调和底层传输协议的情况下发送和接收数据。 以下是一个用asyncio实现的TCP回显客户端：123456789">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-11-26T00:34:55.750Z">
+<meta property="og:updated_time" content="2018-11-27T02:26:43.739Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="asyncio异步IO——Streams详解">
+<meta name="twitter:description" content="前言本文翻译自python3.7官方文档——asyncio-stream,译者马鸣谦,邮箱 1612557569@qq.com。转载请注明出处。 数据流（Streams）数据流（Streams）是用于处理网络连接的高阶异步/等待就绪(async/await-ready)原语,可以在不使用回调和底层传输协议的情况下发送和接收数据。 以下是一个用asyncio实现的TCP回显客户端：123456789">
 
 
 
@@ -378,12 +381,24 @@
                 
               
 
-              <time title="创建时间：2018-11-26 08:32:15 / 修改时间：08:34:55" itemprop="dateCreated datePublished" datetime="2018-11-26T08:32:15+08:00">2018-11-26</time>
+              <time title="创建时间：2018-11-26 08:32:15" itemprop="dateCreated datePublished" datetime="2018-11-26T08:32:15+08:00">2018-11-26</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-11-27 10:26:43" itemprop="dateModified" datetime="2018-11-27T10:26:43+08:00">2018-11-27</time>
               
             
           </span>
@@ -441,7 +456,160 @@
       
 
       
-        
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本文翻译自python3.7官方文档——<a href="https://docs.python.org/3/library/asyncio-stream.html" target="_blank" rel="noopener">asyncio-stream</a>,译者<a href="https://ashooter.github.io">马鸣谦</a>,邮箱 <a href="mailto:1612557569@qq.com" target="_blank" rel="noopener">1612557569@qq.com</a>。转载请注明出处。</p>
+<h1 id="数据流（Streams）"><a href="#数据流（Streams）" class="headerlink" title="数据流（Streams）"></a>数据流（Streams）</h1><p>数据流（Streams）是用于处理<code>网络连接</code>的高阶<code>异步/等待就绪(async/await-ready)</code>原语,可以在不使用回调和底层传输协议的情况下发送和接收数据。</p>
+<p>以下是一个用asyncio实现的TCP回显客户端：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">tcp_echo_client</span><span class="params">(message)</span>:</span></span><br><span class="line">    reader, writer = <span class="keyword">await</span> asyncio.open_connection(</span><br><span class="line">        <span class="string">'127.0.0.1'</span>, <span class="number">8888</span>)</span><br><span class="line"></span><br><span class="line">    print(<span class="string">f'Send: <span class="subst">&#123;message!r&#125;</span>'</span>)</span><br><span class="line">    writer.write(message.encode())</span><br><span class="line"></span><br><span class="line">    data = <span class="keyword">await</span> reader.read(<span class="number">100</span>)</span><br><span class="line">    print(<span class="string">f'Received: <span class="subst">&#123;data.decode()!r&#125;</span>'</span>)</span><br><span class="line"></span><br><span class="line">    print(<span class="string">'Close the connection'</span>)</span><br><span class="line">    writer.close()</span><br><span class="line">    <span class="keyword">await</span> writer.wait_closed()</span><br><span class="line"></span><br><span class="line">asyncio.run(tcp_echo_client(<span class="string">'Hello World!'</span>))</span><br></pre></td></tr></table></figure></p>
+<p>完整代码见<a href="">例子</a>一节。</p>
+<h3 id="Stream方法"><a href="#Stream方法" class="headerlink" title="Stream方法"></a>Stream方法</h3><p>以下所列的高层asyncio方法可以被用作创建和处理Stream：</p>
+<ul>
+<li><p>coroutine asyncio.open_connection(host=None,* ,loop=None,limit=None,ssl=None,family=0, proto=0, flags=0, sock=None, local_addr=None, server_hostname=None, ssl_handshake_timeout=None)</p>
+<ul>
+<li>创建一个网络连接，并返回一对（reader,writer）对象。</li>
+<li>返回的<code>reader</code>和<code>writer</code>对象是<code>StreamReader</code>和<code>StreamWriter</code>类的实例。</li>
+<li><code>loop</code>是可选参数，在此方法被某个协程<code>await</code>时能够自动确定。</li>
+<li><code>limit</code>限定返回的<code>StreamReader</code>实例使用的<code>缓冲区</code>大小。默认情况下，缓冲区限制为<code>64KiB</code>。</li>
+<li>其余的参数被直接传递给<code>loop.create_connection()</code>。</li>
+<li><strong>python3.7新增</strong>：<code>ssl_handshake_timeout</code>参数。</li>
+</ul>
+</li>
+<li><p>coroutine asyncio.start_server(client_connected_cb, host=None, port=None, * , loop=None, limit=None, family=socket.AF_UNSPEC, flags=socket.AI_PASSIVE, sock=None, backlog=100, ssl=None, reuse_address=None, reuse_port=None, ssl_handshake_timeout=None, start_serving=True)</p>
+<ul>
+<li>启动一个socket服务端。</li>
+<li><code>client_connected_cb</code>回调在新连接建立的时候被调用。该回调函数接收<code>StreamReader</code>和<code>StreamWriter</code>类的实例对<code>(reader,writer)</code>作为两个参数。</li>
+<li><code>client_connected_cb</code>可以是普通的可调用函数，也可以是协程函数。如果是协程函数，那么会被自动封装为<code>Task</code>对象处理。</li>
+<li><code>loop</code>是可选参数，在此方法被某个协程<code>await</code>时能够自动确定。</li>
+<li><code>limit</code>限定返回的<code>StreamReader</code>实例使用的<code>缓冲区</code>大小。默认情况下，缓冲区限制为<code>64KiB</code>。</li>
+<li>其余的参数被直接传递给<code>loop.create_server()</code>。</li>
+<li><ul>
+<li><strong>python3.7新增</strong>：<code>ssl_handshake_timeout</code>和<code>start_serving</code>参数。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="Unix-Sockets"><a href="#Unix-Sockets" class="headerlink" title="Unix Sockets"></a>Unix Sockets</h3><p>-coroutine asyncio.open_unix_connection(path=None, * , loop=None, limit=None, ssl=None, sock=None, server_hostname=None, ssl_handshake_timeout=None)</p>
+<ul>
+<li>创建一个Unix socket连接，并返回一对<code>(reader,writer)</code>对象。</li>
+<li>与<code>open_connection</code>类似，只是运行在Unix sockets上。</li>
+<li>另见<a href="https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.create_unix_connection" target="_blank" rel="noopener"><code>loop.create_unix_connection()</code></a></li>
+<li><strong>可用于</strong>：Unix</li>
+<li><strong>python3.7新增</strong>：<code>ssl_handshake_timeout</code>参数。</li>
+<li><strong>python3.7修正</strong>：<code>path</code>参数可以为<a href="https://docs.python.org/3/glossary.html#term-path-like-object" target="_blank" rel="noopener"><code>类path(path-like)对象</code></a></li>
+</ul>
+<ul>
+<li>coroutine asyncio.start_unix_server(client_connected_cb, path=None, * , loop=None, limit=None, sock=None, backlog=100, ssl=None, ssl_handshake_timeout=None, start_serving=True)<ul>
+<li>启动一个Unix socket 服务端。</li>
+<li>类似于<code>start_server</code>,只是运行在Unix sockets上。</li>
+<li>另见<a href="https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.create_unix_server" target="_blank" rel="noopener"><code>loop.create_unix_server</code></a></li>
+<li><strong>可用于</strong>：Unix</li>
+<li><strong>python3.7新增</strong>：<code>ssl_handshake_timeout</code>参数。</li>
+<li><strong>python3.7修正</strong>：<code>path</code>参数可以为<a href="https://docs.python.org/3/glossary.html#term-path-like-object" target="_blank" rel="noopener"><code>类path(path-like)对象</code></a></li>
+</ul>
+</li>
+</ul>
+<h2 id="StreamReader"><a href="#StreamReader" class="headerlink" title="StreamReader"></a>StreamReader</h2><h3 id="class-asyncio-StreamReader"><a href="#class-asyncio-StreamReader" class="headerlink" title="class asyncio.StreamReader"></a>class asyncio.StreamReader</h3><p>定义一个读取器对象，提供从IO数据流中读取数据的API。<br><strong>不建议</strong> 直接实例化<code>StreamReader</code>对象。建议通过<code>open_connection()</code>或<code>start_server()</code>创建此类对象。</p>
+<ul>
+<li>coroutine <strong>read(n=-1)</strong><ul>
+<li>最多读取<code>n</code>字节数据。如果<code>n</code>未设置，或被设置为<code>-1</code>，则读取至<code>EOF</code>标志，并返回读到的所有字节。</li>
+<li>如果在缓冲区仍为空时遇到<code>EOF</code>，则返回一个空的<code>bytes</code>对象。</li>
+</ul>
+</li>
+<li><p>coroutine <strong>readline()</strong></p>
+<ul>
+<li>读取一行（以<code>\n</code>为标志）。</li>
+<li>如果在找到<code>\n</code>之前遇到<code>EOF</code>，则返回已读取到的数据段。</li>
+<li>如果遇到<code>EOF</code>时内部缓冲区仍为空，则返回空的<code>bytes</code>对象。</li>
+</ul>
+</li>
+<li><p>coroutine <strong>readexactly(n)</strong></p>
+<ul>
+<li>精确读取<code>n</code>字节数据。</li>
+<li>如果在尚未读够<code>n</code>字节时遇到<code>EOF</code>，则引发<code>IncompleteReadError</code>异常。已经读取的部分数据可以通过<code>IncompleteReadError.partial</code>属性获取。</li>
+</ul>
+</li>
+<li><p>coroutine <strong>readuntil(separator=b’\n’)</strong></p>
+<ul>
+<li>从数据流中读取数据直到遇到<code>separator</code>。</li>
+<li>如果执行成功，读到的数据和分隔符将从内部缓冲区里移除。返回的数据会在末尾包含分隔符。</li>
+<li>如果读取数据的总量超过了配置的数据流缓冲区限制，则引发<code>LimitOverrunError</code>,数据会被留在内部缓冲区中，可以被再次读取。</li>
+<li>如果在找到<code>separator</code>分隔符之前遇到<code>EOF</code>，则引发<code>IncompleteReadError</code>异常，内部缓冲区会被重置。<code>IncompleteReadError.partial</code>属性会包含部分<code>separator</code>。</li>
+<li>python3.5.2新增。</li>
+</ul>
+</li>
+<li><p><strong>at_eof()</strong></p>
+<ul>
+<li>如果缓冲区为空，且<code>feed_eof()</code>被调用，则返回<code>True</code>。</li>
+</ul>
+</li>
+</ul>
+<h2 id="StreamWriter"><a href="#StreamWriter" class="headerlink" title="StreamWriter"></a>StreamWriter</h2><h3 id="class-asyncio-StreamWriter"><a href="#class-asyncio-StreamWriter" class="headerlink" title="class asyncio.StreamWriter"></a>class asyncio.StreamWriter</h3><p>定义一个写入器对象，提供向IO数据流中写入数据的API。<br>不建议直接实例化<code>StreamWriter</code>对象，建议通过<code>open_connection</code>或<code>start_server</code>实例化对象。</p>
+<ul>
+<li><p><strong>can_writer_eof()</strong></p>
+<ul>
+<li>如果下层传输支持<code>write_eof</code>方法，则返回<code>True</code>,否则返回<code>False</code>。</li>
+</ul>
+</li>
+<li><p><strong>write_eof()</strong></p>
+<ul>
+<li>在缓冲的写入数据被刷新后，关闭数据流的写入端。</li>
+</ul>
+</li>
+<li><p><strong>transport</strong></p>
+<ul>
+<li>返回下层的asyncio传输。</li>
+</ul>
+</li>
+<li><p><strong>get_extra_info(name,default=None)</strong></p>
+<ul>
+<li>访问可选的传输信息。</li>
+</ul>
+</li>
+<li><p><strong>write(data)</strong></p>
+<ul>
+<li>向数据流中写入数据。</li>
+<li>此方法不受流量控制的影响。<code>write()</code>应同<code>drain()</code>一同使用。</li>
+</ul>
+</li>
+<li><p><strong>writelines()</strong></p>
+<ul>
+<li>向数据流中写入<code>bytes</code>列表（或任何的可迭代对象）。</li>
+<li>此方法不受流量控制的影响。应与<code>drain()</code>一同使用。</li>
+</ul>
+</li>
+<li><p>coroutine <strong>drain()</strong></p>
+<ul>
+<li><p>等待恢复数据写入的时机。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">writer.write(data)</span><br><span class="line">await writer.drain()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>这是一个与底层IO输入缓冲区交互的流量控制方法。当缓冲区达到上限时，<code>drain()</code>阻塞，待到缓冲区回落到下限时，写操作可以被恢复。当不需要等待时，<code>drain()</code>会立即返回。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>close()</strong></p>
+<ul>
+<li>关闭数据流。</li>
+</ul>
+</li>
+<li><p><strong>is_closing()</strong></p>
+<ul>
+<li>如果数据流已经关闭或正在关闭，则返回<code>True</code>。</li>
+</ul>
+</li>
+<li><p>coroutine <strong>wait_closed()</strong></p>
+<ul>
+<li>保持等待，直到数据流关闭。</li>
+<li>保持等待，直到底层连接被关闭，应该在<code>close()</code>后调用此方法。</li>
+<li>Python3.7新增。</li>
+</ul>
+</li>
+</ul>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><h3 id="利用Stream实现TCP回显客户端"><a href="#利用Stream实现TCP回显客户端" class="headerlink" title="利用Stream实现TCP回显客户端"></a>利用Stream实现TCP回显客户端</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">tcp_echo_client</span><span class="params">(message)</span>:</span></span><br><span class="line">    reader, writer = <span class="keyword">await</span> asyncio.open_connection(</span><br><span class="line">        <span class="string">'127.0.0.1'</span>, <span class="number">8888</span>)</span><br><span class="line"></span><br><span class="line">    print(<span class="string">f'Send: <span class="subst">&#123;message!r&#125;</span>'</span>)</span><br><span class="line">    writer.write(message.encode())</span><br><span class="line"></span><br><span class="line">    data = <span class="keyword">await</span> reader.read(<span class="number">100</span>)</span><br><span class="line">    print(<span class="string">f'Received: <span class="subst">&#123;data.decode()!r&#125;</span>'</span>)</span><br><span class="line"></span><br><span class="line">    print(<span class="string">'Close the connection'</span>)</span><br><span class="line">    writer.close()</span><br><span class="line"></span><br><span class="line">asyncio.run(tcp_echo_client(<span class="string">'Hello World!'</span>))</span><br></pre></td></tr></table></figure>
+<h3 id="利用Stream实现TCP回显服务端"><a href="#利用Stream实现TCP回显服务端" class="headerlink" title="利用Stream实现TCP回显服务端"></a>利用Stream实现TCP回显服务端</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">handle_echo</span><span class="params">(reader, writer)</span>:</span></span><br><span class="line">    data = <span class="keyword">await</span> reader.read(<span class="number">100</span>)</span><br><span class="line">    message = data.decode()</span><br><span class="line">    addr = writer.get_extra_info(<span class="string">'peername'</span>)</span><br><span class="line"></span><br><span class="line">    print(<span class="string">f"Received <span class="subst">&#123;message!r&#125;</span> from <span class="subst">&#123;addr!r&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line">    print(<span class="string">f"Send: <span class="subst">&#123;message!r&#125;</span>"</span>)</span><br><span class="line">    writer.write(data)</span><br><span class="line">    <span class="keyword">await</span> writer.drain()</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"Close the connection"</span>)</span><br><span class="line">    writer.close()</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    server = <span class="keyword">await</span> asyncio.start_server(</span><br><span class="line">        handle_echo, <span class="string">'127.0.0.1'</span>, <span class="number">8888</span>)</span><br><span class="line"></span><br><span class="line">    addr = server.sockets[<span class="number">0</span>].getsockname()</span><br><span class="line">    print(<span class="string">f'Serving on <span class="subst">&#123;addr&#125;</span>'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">with</span> server:</span><br><span class="line">        <span class="keyword">await</span> server.serve_forever()</span><br><span class="line"></span><br><span class="line">asyncio.run(main())</span><br></pre></td></tr></table></figure>
+<h3 id="获取HTTP头"><a href="#获取HTTP头" class="headerlink" title="获取HTTP头"></a>获取HTTP头</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> urllib.parse</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">print_http_headers</span><span class="params">(url)</span>:</span></span><br><span class="line">    url = urllib.parse.urlsplit(url)</span><br><span class="line">    <span class="keyword">if</span> url.scheme == <span class="string">'https'</span>:</span><br><span class="line">        reader, writer = <span class="keyword">await</span> asyncio.open_connection(</span><br><span class="line">            url.hostname, <span class="number">443</span>, ssl=<span class="keyword">True</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        reader, writer = <span class="keyword">await</span> asyncio.open_connection(</span><br><span class="line">            url.hostname, <span class="number">80</span>)</span><br><span class="line"></span><br><span class="line">    query = (</span><br><span class="line">        <span class="string">f"HEAD <span class="subst">&#123;url.path <span class="keyword">or</span> <span class="string">'/'</span>&#125;</span> HTTP/1.0\r\n"</span></span><br><span class="line">        <span class="string">f"Host: <span class="subst">&#123;url.hostname&#125;</span>\r\n"</span></span><br><span class="line">        <span class="string">f"\r\n"</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    writer.write(query.encode(<span class="string">'latin-1'</span>))</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        line = <span class="keyword">await</span> reader.readline()</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> line:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">        line = line.decode(<span class="string">'latin1'</span>).rstrip()</span><br><span class="line">        <span class="keyword">if</span> line:</span><br><span class="line">            print(<span class="string">f'HTTP header&gt; <span class="subst">&#123;line&#125;</span>'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Ignore the body, close the socket</span></span><br><span class="line">    writer.close()</span><br><span class="line"></span><br><span class="line">url = sys.argv[<span class="number">1</span>]</span><br><span class="line">asyncio.run(print_http_headers(url))</span><br></pre></td></tr></table></figure>
+<p>用法：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python example.py http://example.com/path/page.html</span><br></pre></td></tr></table></figure></p>
+<p>或：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python example.py https://example.com/path/page.html</span><br></pre></td></tr></table></figure></p>
+<h3 id="利用Stream注册等待数据的开放socket"><a href="#利用Stream注册等待数据的开放socket" class="headerlink" title="利用Stream注册等待数据的开放socket"></a>利用Stream注册等待数据的开放socket</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">wait_for_data</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment"># Get a reference to the current event loop because</span></span><br><span class="line">    <span class="comment"># we want to access low-level APIs.</span></span><br><span class="line">    loop = asyncio.get_running_loop()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Create a pair of connected sockets.</span></span><br><span class="line">    rsock, wsock = socket.socketpair()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Register the open socket to wait for data.</span></span><br><span class="line">    reader, writer = <span class="keyword">await</span> asyncio.open_connection(sock=rsock)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Simulate the reception of data from the network</span></span><br><span class="line">    loop.call_soon(wsock.send, <span class="string">'abc'</span>.encode())</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Wait for data</span></span><br><span class="line">    data = <span class="keyword">await</span> reader.read(<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Got data, we are done: close the socket</span></span><br><span class="line">    print(<span class="string">"Received:"</span>, data.decode())</span><br><span class="line">    writer.close()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Close the second socket</span></span><br><span class="line">    wsock.close()</span><br><span class="line"></span><br><span class="line">asyncio.run(wait_for_data())</span><br></pre></td></tr></table></figure>
+
       
     </div>
 
@@ -534,8 +702,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -629,6 +806,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据流（Streams）"><span class="nav-number">2.</span> <span class="nav-text">数据流（Streams）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Stream方法"><span class="nav-number">2.0.1.</span> <span class="nav-text">Stream方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Unix-Sockets"><span class="nav-number">2.0.2.</span> <span class="nav-text">Unix Sockets</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#StreamReader"><span class="nav-number">2.1.</span> <span class="nav-text">StreamReader</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#class-asyncio-StreamReader"><span class="nav-number">2.1.1.</span> <span class="nav-text">class asyncio.StreamReader</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#StreamWriter"><span class="nav-number">2.2.</span> <span class="nav-text">StreamWriter</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#class-asyncio-StreamWriter"><span class="nav-number">2.2.1.</span> <span class="nav-text">class asyncio.StreamWriter</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例"><span class="nav-number">2.3.</span> <span class="nav-text">示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#利用Stream实现TCP回显客户端"><span class="nav-number">2.3.1.</span> <span class="nav-text">利用Stream实现TCP回显客户端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用Stream实现TCP回显服务端"><span class="nav-number">2.3.2.</span> <span class="nav-text">利用Stream实现TCP回显服务端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取HTTP头"><span class="nav-number">2.3.3.</span> <span class="nav-text">获取HTTP头</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用Stream注册等待数据的开放socket"><span class="nav-number">2.3.4.</span> <span class="nav-text">利用Stream注册等待数据的开放socket</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
