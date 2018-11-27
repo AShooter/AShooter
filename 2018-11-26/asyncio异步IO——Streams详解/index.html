@@ -116,7 +116,7 @@
 <meta property="og:site_name" content="BiuBiu">
 <meta property="og:description" content="前言本文翻译自python3.7官方文档——asyncio-stream,译者马鸣谦,邮箱 1612557569@qq.com。转载请注明出处。 数据流（Streams）数据流（Streams）是用于处理网络连接的高阶异步/等待就绪(async/await-ready)原语,可以在不使用回调和底层传输协议的情况下发送和接收数据。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-11-27T02:36:11.474Z">
+<meta property="og:updated_time" content="2018-11-27T02:51:18.679Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="asyncio异步IO——Streams详解">
 <meta name="twitter:description" content="前言本文翻译自python3.7官方文档——asyncio-stream,译者马鸣谦,邮箱 1612557569@qq.com。转载请注明出处。 数据流（Streams）数据流（Streams）是用于处理网络连接的高阶异步/等待就绪(async/await-ready)原语,可以在不使用回调和底层传输协议的情况下发送和接收数据。">
@@ -398,7 +398,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-11-27 10:36:11" itemprop="dateModified" datetime="2018-11-27T10:36:11+08:00">2018-11-27</time>
+                <time title="修改时间：2018-11-27 10:51:18" itemprop="dateModified" datetime="2018-11-27T10:51:18+08:00">2018-11-27</time>
               
             
           </span>
@@ -474,15 +474,12 @@
 <li><p>coroutine <strong>asyncio.start_server(client_connected_cb,host=None,port=None,*,loop=None,limit=None,family=socket.AF_UNSPEC,flags=socket.AI_PASSIVE,sock=None,backlog=100,ssl=None,reuse_address=None,reuse_port=None,ssl_handshake_timeout=None,start_serving=True)</strong></p>
 <ul>
 <li>启动一个socket服务端。</li>
-<li><code>client_connected_cb</code>回调在新连接建立的时候被调用。该回调函数接收<code>StreamReader</code>和<code>StreamWriter</code>类的实例对<code>(reader,writer)</code>作为两个参数。</li>
+<li><code>client_connected_cb</code>指定的回调函数，在新连接建立的时候被调用。该回调函数接收<code>StreamReader</code>和<code>StreamWriter</code>类的‘实例对’<code>(reader,writer)</code>作为两个参数。</li>
 <li><code>client_connected_cb</code>可以是普通的可调用函数，也可以是协程函数。如果是协程函数，那么会被自动封装为<code>Task</code>对象处理。</li>
 <li><code>loop</code>是可选参数，在此方法被某个协程<code>await</code>时能够自动确定。</li>
-<li><code>limit</code>限定返回的<code>StreamReader</code>实例使用的<code>缓冲区</code>大小。默认情况下，缓冲区限制为<code>64KiB</code>。</li>
+<li><code>limit</code>限定返回的<code>StreamReader</code>实例使用的<code>缓冲区</code>大小。默认情况下，缓冲区限定值为<code>64KiB</code>。</li>
 <li>其余的参数被直接传递给<code>loop.create_server()</code>。</li>
-<li><ul>
 <li><strong>python3.7新增</strong>：<code>ssl_handshake_timeout</code>和<code>start_serving</code>参数。</li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
