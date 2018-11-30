@@ -108,29 +108,24 @@
 
 
 
-  <meta name="description" content="这是利用Hexo写博客以来的第一篇正儿八经的文章,就记一记眼下正在做的事情:给Hexo更换主题。 文章主要内容是讲述更换主题的操作步骤，从本文你可以了解到：  如何获取一个Hexo的主题 如何安装和配置主题 如何设置菜单、分类、标签、关于我等内容">
-<meta name="keywords" content="修改Hexo">
+  <meta name="description" content="一、某一Task在挂起时，被挂起的子任务是不是在新的线程或进程里继续执行，直到返回结果，通知主线程这个问题迷惑了我很久，所以需要通过代码实验一下：  编写一个协程，在协程中获取当前的线程和进程ID 在另一个协程中调用上一个协程，并获取当前协程的线程ID和进程ID 封装为Task，纳入事件循环中运行，查看主线程的线程ID和进程ID  123456789101112131415161718192021">
 <meta property="og:type" content="article">
-<meta property="og:title" content="如何修改Hexo的主题">
-<meta property="og:url" content="http://ashooter.github.io/2018-11-15/如何修改Hexo的主题/index.html">
+<meta property="og:title" content="关于异步并发的几点疑惑">
+<meta property="og:url" content="http://ashooter.github.io/2018-11-28/关于异步并发的几点疑惑/index.html">
 <meta property="og:site_name" content="BiuBiu">
-<meta property="og:description" content="这是利用Hexo写博客以来的第一篇正儿八经的文章,就记一记眼下正在做的事情:给Hexo更换主题。 文章主要内容是讲述更换主题的操作步骤，从本文你可以了解到：  如何获取一个Hexo的主题 如何安装和配置主题 如何设置菜单、分类、标签、关于我等内容">
+<meta property="og:description" content="一、某一Task在挂起时，被挂起的子任务是不是在新的线程或进程里继续执行，直到返回结果，通知主线程这个问题迷惑了我很久，所以需要通过代码实验一下：  编写一个协程，在协程中获取当前的线程和进程ID 在另一个协程中调用上一个协程，并获取当前协程的线程ID和进程ID 封装为Task，纳入事件循环中运行，查看主线程的线程ID和进程ID  123456789101112131415161718192021">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://ashooter.github.io/如何修改Hexo的主题/hexo.png">
-<meta property="og:image" content="http://ashooter.github.io/2018-11-15/如何修改Hexo的主题/如何修改Hexo的主题/Next.png">
-<meta property="og:image" content="http://ashooter.github.io/menu.png">
-<meta property="og:updated_time" content="2018-11-22T09:15:38.833Z">
+<meta property="og:updated_time" content="2018-11-29T07:33:59.970Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="如何修改Hexo的主题">
-<meta name="twitter:description" content="这是利用Hexo写博客以来的第一篇正儿八经的文章,就记一记眼下正在做的事情:给Hexo更换主题。 文章主要内容是讲述更换主题的操作步骤，从本文你可以了解到：  如何获取一个Hexo的主题 如何安装和配置主题 如何设置菜单、分类、标签、关于我等内容">
-<meta name="twitter:image" content="http://ashooter.github.io/如何修改Hexo的主题/hexo.png">
+<meta name="twitter:title" content="关于异步并发的几点疑惑">
+<meta name="twitter:description" content="一、某一Task在挂起时，被挂起的子任务是不是在新的线程或进程里继续执行，直到返回结果，通知主线程这个问题迷惑了我很久，所以需要通过代码实验一下：  编写一个协程，在协程中获取当前的线程和进程ID 在另一个协程中调用上一个协程，并获取当前协程的线程ID和进程ID 封装为Task，纳入事件循环中运行，查看主线程的线程ID和进程ID  123456789101112131415161718192021">
 
 
 
 
 
 
-  <link rel="canonical" href="http://ashooter.github.io/2018-11-15/如何修改Hexo的主题/">
+  <link rel="canonical" href="http://ashooter.github.io/2018-11-28/关于异步并发的几点疑惑/">
 
 
 
@@ -140,7 +135,7 @@
   };
 </script>
 
-  <title>如何修改Hexo的主题 | BiuBiu</title>
+  <title>关于异步并发的几点疑惑 | BiuBiu</title>
   
 
 
@@ -343,7 +338,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://ashooter.github.io/2018-11-15/如何修改Hexo的主题/">
+    <link itemprop="mainEntityOfPage" href="http://ashooter.github.io/2018-11-28/关于异步并发的几点疑惑/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="MingQian">
@@ -360,7 +355,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">如何修改Hexo的主题
+          <h1 class="post-title" itemprop="name headline">关于异步并发的几点疑惑
               
             
           </h1>
@@ -385,7 +380,7 @@
                 
               
 
-              <time title="创建时间：2018-11-15 09:27:18" itemprop="dateCreated datePublished" datetime="2018-11-15T09:27:18+08:00">2018-11-15</time>
+              <time title="创建时间：2018-11-28 09:49:27" itemprop="dateCreated datePublished" datetime="2018-11-28T09:49:27+08:00">2018-11-28</time>
             
 
             
@@ -402,29 +397,11 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-11-22 17:15:38" itemprop="dateModified" datetime="2018-11-22T17:15:38+08:00">2018-11-22</time>
+                <time title="修改时间：2018-11-29 15:33:59" itemprop="dateModified" datetime="2018-11-29T15:33:59+08:00">2018-11-29</time>
               
             
           </span>
 
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Hexo/" itemprop="url" rel="index"><span itemprop="name">Hexo</span></a></span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -460,54 +437,16 @@
       
 
       
-        <p>这是利用Hexo写博客以来的第一篇正儿八经的文章,就记一记眼下正在做的事情:<strong>给Hexo更换主题</strong>。</p>
-<p>文章主要内容是讲述更换主题的操作步骤，从本文你可以了解到：</p>
+        <h1 id="一、某一Task在挂起时，被挂起的子任务是不是在新的线程或进程里继续执行，直到返回结果，通知主线程"><a href="#一、某一Task在挂起时，被挂起的子任务是不是在新的线程或进程里继续执行，直到返回结果，通知主线程" class="headerlink" title="一、某一Task在挂起时，被挂起的子任务是不是在新的线程或进程里继续执行，直到返回结果，通知主线程"></a>一、某一Task在挂起时，被挂起的子任务是不是在新的线程或进程里继续执行，直到返回结果，通知主线程</h1><p>这个问题迷惑了我很久，所以需要通过代码实验一下：</p>
 <ul>
-<li>如何获取一个Hexo的主题</li>
-<li>如何安装和配置主题</li>
-<li>如何设置菜单、分类、标签、关于我等内容</li>
+<li>编写一个协程，在协程中获取当前的线程和进程ID</li>
+<li>在另一个协程中调用上一个协程，并获取当前协程的线程ID和进程ID</li>
+<li>封装为Task，纳入事件循环中运行，查看主线程的线程ID和进程ID</li>
 </ul>
-<a id="more"></a>
-<h2 id="Hexo主题的获取与安装"><a href="#Hexo主题的获取与安装" class="headerlink" title="Hexo主题的获取与安装"></a>Hexo主题的获取与安装</h2><p>Hexo搭建完成之后，默认主题是这样的：</p>
-<p><img src="/如何修改Hexo的主题/hexo.png" alt="默认主题"></p>
-<p>想要修改这个主题，我们可以去<a href="https://hexo.io/themes/" target="_blank" rel="noopener">Hexo的主题市场</a>选择一个自己喜欢的主题。</p>
-<p>我选择了简洁干净的<a href="https://github.com/theme-next/hexo-theme-next" target="_blank" rel="noopener">NexT主题</a></p>
-<p>按照GitHub中该NexT项目的Installation执行安装：</p>
-<p><strong>Step 1</strong> 进入Hexo目录</p>
-<pre><code>$ cd hexo
-$ ls
-_config.yml  node_modules  package.json  public  scaffolds  source  themes
-</code></pre><p><strong>step 2</strong> 获取NexT</p>
-<pre><code>$ git clone https://github.com/theme-next/hexo-theme-next themes/next
-</code></pre><p><strong>step 3</strong> 设置NexT</p>
-<p>在hexo根目录下，设置<strong>_config.yml</strong>文件：</p>
-<pre><code>theme: next
-</code></pre><p><strong>step 4</strong> 查看效果</p>
-<pre><code>hexo g
-hexo d
-</code></pre><p>安装并启用NexT主题之后，我的博客变了模样：</p>
-<p><img src="如何修改Hexo的主题/Next.png" alt="NexT"></p>
-<h2 id="设置菜单"><a href="#设置菜单" class="headerlink" title="设置菜单"></a>设置菜单</h2><hr>
-<p>在 Hexo 中有两份主要的配置文件，其名称都是 _config.yml。 其中，一份位于站点根目录下，主要包含 Hexo 本身的配置；另一份位于主题目录下，这份配置由主题作者提供，主要用于配置主题相关的选项。</p>
-<p>为了描述方便，在以下说明中，将前者称为 <em>站点配置文件</em>， 后者称为 <em>主题配置文件</em>。<br>接下来，我们为新的主题配置菜单，菜单配置一般包括三个部分：</p>
-<ul>
-<li>第一是菜单项设置，包括菜单名称和链接</li>
-<li>第二是菜单项显示文本配置</li>
-<li>第三是菜单项对应的图标配置</li>
-</ul>
-<h3 id="设置菜单项的名称和链接"><a href="#设置菜单项的名称和链接" class="headerlink" title="设置菜单项的名称和链接"></a>设置菜单项的名称和链接</h3><p>在 <em>主题配置文件</em> 中做如下配置</p>
-<pre><code>menu:
-  home: /
-  archives: /archives
-  about: /about
-  categories: /categories
-  tags: /tags
-</code></pre><p>提交修改,重新deploy后,由于还没有相应的页面,所以虽然在首页上出现了相应的菜单,但是点击链接确实404页面。<br><img src="/menu.png" alt="添加菜单项之后"></p>
-<h3 id="创建存档、分类、标签等页面"><a href="#创建存档、分类、标签等页面" class="headerlink" title="创建存档、分类、标签等页面"></a>创建存档、分类、标签等页面</h3><p>以创建标签页面为例：</p>
-<p><strong> Step1 新建页面</strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> your-hexo-site</span><br><span class="line">$ hexo new page tags</span><br></pre></td></tr></table></figure></p>
-<p><strong>Step2 设置页面类型</strong></p>
-<p>编辑刚刚新建的页面，将页面类型设置为 tags ，主题自动为这个页面显示标签云。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">title: 标签</span><br><span class="line">date: 2014-12-22 12:39:04</span><br><span class="line"><span class="built_in">type</span>: <span class="string">"tags"</span></span><br><span class="line">---</span><br></pre></td></tr></table></figure></p>
-<p>其他页面按照标签页的创建方式依次创建即可。<br>创建完成后发布到github，稍等片刻会发现原来为404的标签页已经可以正常打开了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> psutil</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">get_runtime_info</span><span class="params">()</span>:</span></span><br><span class="line">    pid = os.getpid()</span><br><span class="line">    p = psutil.Process(pid)</span><br><span class="line">    <span class="keyword">await</span> asyncio.sleep(<span class="number">1</span>)</span><br><span class="line">    print(<span class="string">f"Process info:<span class="subst">&#123;p.ppid&#125;</span>"</span>)</span><br><span class="line">    print(<span class="string">f"Threading info:<span class="subst">&#123;threading.get_ident()&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">await</span> get_runtime_info()</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    pid = os.getpid()</span><br><span class="line">    p = psutil.Process(pid)</span><br><span class="line">    print(<span class="string">f"Main Process info:<span class="subst">&#123;p.ppid&#125;</span>"</span>)</span><br><span class="line">    print(<span class="string">f"Main Threading info:<span class="subst">&#123;threading.get_ident()&#125;</span>"</span>)</span><br><span class="line">    tasks = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>):</span><br><span class="line">        tasks.append(asyncio.create_task(test()))</span><br><span class="line"></span><br><span class="line">    res = <span class="keyword">await</span> asyncio.gather(*tasks)</span><br><span class="line"></span><br><span class="line">    print(res)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">asyncio.run(main())</span><br></pre></td></tr></table></figure>
+<p>执行结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Main Process info:&lt;bound method Process.ppid of psutil.Process(pid=4940, name=&apos;python.exe&apos;, started=&apos;10:27:49&apos;)&gt;</span><br><span class="line">Main Threading info:6460</span><br><span class="line">Process info:&lt;bound method Process.ppid of psutil.Process(pid=1760, name=&apos;python.exe&apos;, started=&apos;10:22:57&apos;)&gt;</span><br><span class="line">Threading info:5716</span><br><span class="line">Process info:&lt;bound method Process.ppid of psutil.Process(pid=1760, name=&apos;python.exe&apos;, started=&apos;10:22:57&apos;)&gt;</span><br><span class="line">Threading info:5716</span><br><span class="line">Process info:&lt;bound method Process.ppid of psutil.Process(pid=1760, name=&apos;python.exe&apos;, started=&apos;10:22:57&apos;)&gt;</span><br><span class="line">Threading info:5716</span><br><span class="line">Process info:&lt;bound method Process.ppid of psutil.Process(pid=1760, name=&apos;python.exe&apos;, started=&apos;10:22:57&apos;)&gt;</span><br><span class="line">Threading info:5716</span><br><span class="line">Process info:&lt;bound method Process.ppid of psutil.Process(pid=1760, name=&apos;python.exe&apos;, started=&apos;10:22:57&apos;)&gt;</span><br><span class="line">Threading info:5716</span><br><span class="line">[None, None, None, None, None]</span><br></pre></td></tr></table></figure></p>
+<p>可见，任务均在同一线程，同一进程内完成。</p>
+<h1 id="assert表达式"><a href="#assert表达式" class="headerlink" title="assert表达式"></a>assert表达式</h1><p>python assert断言是声明其布尔值必须为真的判定，如果发生异常就说明表达式为假。可以理解assert断言语句为 <strong>raise-if-not</strong>，用来测试表示式，其返回值为假，就会触发异常。</p>
 
       
     </div>
@@ -529,12 +468,6 @@ hexo d
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/修改Hexo/" rel="tag"># 修改Hexo</a>
-          
-        </div>
-      
 
       
       
@@ -544,14 +477,18 @@ hexo d
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2018-11-26/asyncio异步IO——Streams详解/" rel="next" title="asyncio异步IO——Streams详解">
+                <i class="fa fa-chevron-left"></i> asyncio异步IO——Streams详解
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018-11-15/如何在Hexo中添加本地图片/" rel="prev" title="如何在Hexo中添加本地图片">
-                如何在Hexo中添加本地图片 <i class="fa fa-chevron-right"></i>
+              <a href="/2018-11-30/asyncio异步IO-同步原语/" rel="prev" title="asyncio异步IO--同步原语">
+                asyncio异步IO--同步原语 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -711,7 +648,7 @@ hexo d
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Hexo主题的获取与安装"><span class="nav-number">1.</span> <span class="nav-text">Hexo主题的获取与安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置菜单"><span class="nav-number">2.</span> <span class="nav-text">设置菜单</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#设置菜单项的名称和链接"><span class="nav-number">2.1.</span> <span class="nav-text">设置菜单项的名称和链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建存档、分类、标签等页面"><span class="nav-number">2.2.</span> <span class="nav-text">创建存档、分类、标签等页面</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一、某一Task在挂起时，被挂起的子任务是不是在新的线程或进程里继续执行，直到返回结果，通知主线程"><span class="nav-number">1.</span> <span class="nav-text">一、某一Task在挂起时，被挂起的子任务是不是在新的线程或进程里继续执行，直到返回结果，通知主线程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#assert表达式"><span class="nav-number">2.</span> <span class="nav-text">assert表达式</span></a></li></ol></div>
             
 
           </div>
