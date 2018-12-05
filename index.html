@@ -397,7 +397,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-12-05 10:10:19" itemprop="dateModified" datetime="2018-12-05T10:10:19+08:00">2018-12-05</time>
+                <time title="修改时间：2018-12-05 10:33:15" itemprop="dateModified" datetime="2018-12-05T10:33:15+08:00">2018-12-05</time>
               
             
           </span>
@@ -435,10 +435,7 @@
             <p>asyncio同步原语与线程（threading）模块同步原语基本类似，但有两点重要区别：</p>
 <ul>
 <li>asyncio同步原语<code>非线程安全</code>，因此不应被用作系统线程同步（可以使用<code>threading</code>代替）；</li>
-<li>asyncio同步原语不允许使用<code>timeout</code>参数；可以使用<code>asyncio.wait_for()</code>方法执行有超时设置的操作。</li>
-</ul>
-<p>asyncio有以下5个基本的同步原语：</p>
-<ul>
+<li>asyncio同步原语不允许使用<code>timeout</code>参数；可以使用<code>asyncio.wait_for()</code>方法执行有超时设置的操作。<br>asyncio有以下5个基本的同步原语：</li>
 <li>Lock</li>
 <li>Event</li>
 <li>Condition</li>
@@ -461,22 +458,18 @@
 <li>该方法等待<code>锁</code>的状态变为<code>unlocked</code>,之后设置其为<code>locked</code>，并返回<code>True</code>。</li>
 </ul>
 </li>
-<li><p><strong>release()</strong></p>
-<ul>
+<li><strong>release()</strong><ul>
 <li>释放asyncio同步锁。</li>
 <li>如果<code>锁</code>的状态是<code>locked</code>，则将其重置为<code>unlocked</code>并返回。</li>
 <li>如果<code>锁</code>的状态是<code>unlocked</code>，会引发<code>RuntimeError</code>异常。</li>
 </ul>
 </li>
-<li><p><strong>locked()</strong></p>
-<ul>
-<li>如果<code>锁</code>的状态是<code>locked</code>，则返回<code>True</code>。</li>
+<li><strong>locked()</strong><ul>
+<li>如果<code>锁</code>的状态是<code>locked</code>，则返回<code>True</code>。<h1 id="Event"><a href="#Event" class="headerlink" title="Event"></a>Event</h1></li>
 </ul>
 </li>
 </ul>
 </li>
-</ul>
-<h1 id="Event"><a href="#Event" class="headerlink" title="Event"></a>Event</h1><ul>
 <li><p>class asyncio.<strong>Event(*,loop=None)</strong></p>
 <ul>
 <li>事件对象，非线程安全。</li>
