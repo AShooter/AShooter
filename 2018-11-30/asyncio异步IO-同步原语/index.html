@@ -108,17 +108,17 @@
 
 
 
-  <meta name="description" content="asyncio同步原语与线程（threading）模块同步原语基本类似，但有两点重要区别：  asyncio同步原语非线程安全，因此不应被用作系统线程同步（可以使用threading代替）； asyncio同步原语不允许使用timeout参数；可以使用asyncio.wait_for()方法执行有超时设置的操作。asyncio有以下5个基本的同步原语： Lock Event Condition S">
+  <meta name="description" content="asyncio同步原语与线程（threading）模块同步原语基本类似，但有两点重要区别：  asyncio同步原语非线程安全，因此不应被用作系统线程同步（可以使用threading代替）； asyncio同步原语不允许使用timeout参数；可以使用asyncio.wait_for()方法执行有超时设置的操作。  asyncio有以下5个基本的同步原语：  Lock Event Conditio">
 <meta property="og:type" content="article">
 <meta property="og:title" content="asyncio异步IO--同步原语">
 <meta property="og:url" content="http://ashooter.github.io/2018-11-30/asyncio异步IO-同步原语/index.html">
 <meta property="og:site_name" content="BiuBiu">
-<meta property="og:description" content="asyncio同步原语与线程（threading）模块同步原语基本类似，但有两点重要区别：  asyncio同步原语非线程安全，因此不应被用作系统线程同步（可以使用threading代替）； asyncio同步原语不允许使用timeout参数；可以使用asyncio.wait_for()方法执行有超时设置的操作。asyncio有以下5个基本的同步原语： Lock Event Condition S">
+<meta property="og:description" content="asyncio同步原语与线程（threading）模块同步原语基本类似，但有两点重要区别：  asyncio同步原语非线程安全，因此不应被用作系统线程同步（可以使用threading代替）； asyncio同步原语不允许使用timeout参数；可以使用asyncio.wait_for()方法执行有超时设置的操作。  asyncio有以下5个基本的同步原语：  Lock Event Conditio">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-12-05T02:33:15.634Z">
+<meta property="og:updated_time" content="2018-12-05T02:34:21.035Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="asyncio异步IO--同步原语">
-<meta name="twitter:description" content="asyncio同步原语与线程（threading）模块同步原语基本类似，但有两点重要区别：  asyncio同步原语非线程安全，因此不应被用作系统线程同步（可以使用threading代替）； asyncio同步原语不允许使用timeout参数；可以使用asyncio.wait_for()方法执行有超时设置的操作。asyncio有以下5个基本的同步原语： Lock Event Condition S">
+<meta name="twitter:description" content="asyncio同步原语与线程（threading）模块同步原语基本类似，但有两点重要区别：  asyncio同步原语非线程安全，因此不应被用作系统线程同步（可以使用threading代替）； asyncio同步原语不允许使用timeout参数；可以使用asyncio.wait_for()方法执行有超时设置的操作。  asyncio有以下5个基本的同步原语：  Lock Event Conditio">
 
 
 
@@ -397,7 +397,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-12-05 10:33:15" itemprop="dateModified" datetime="2018-12-05T10:33:15+08:00">2018-12-05</time>
+                <time title="修改时间：2018-12-05 10:34:21" itemprop="dateModified" datetime="2018-12-05T10:34:21+08:00">2018-12-05</time>
               
             
           </span>
@@ -440,7 +440,10 @@
         <p>asyncio同步原语与线程（threading）模块同步原语基本类似，但有两点重要区别：</p>
 <ul>
 <li>asyncio同步原语<code>非线程安全</code>，因此不应被用作系统线程同步（可以使用<code>threading</code>代替）；</li>
-<li>asyncio同步原语不允许使用<code>timeout</code>参数；可以使用<code>asyncio.wait_for()</code>方法执行有超时设置的操作。<br>asyncio有以下5个基本的同步原语：</li>
+<li>asyncio同步原语不允许使用<code>timeout</code>参数；可以使用<code>asyncio.wait_for()</code>方法执行有超时设置的操作。</li>
+</ul>
+<p>asyncio有以下5个基本的同步原语：</p>
+<ul>
 <li>Lock</li>
 <li>Event</li>
 <li>Condition</li>
