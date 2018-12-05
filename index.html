@@ -380,12 +380,24 @@
                 
               
 
-              <time title="创建时间：2018-11-30 16:01:36 / 修改时间：17:09:07" itemprop="dateCreated datePublished" datetime="2018-11-30T16:01:36+08:00">2018-11-30</time>
+              <time title="创建时间：2018-11-30 16:01:36" itemprop="dateCreated datePublished" datetime="2018-11-30T16:01:36+08:00">2018-11-30</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-12-05 10:10:19" itemprop="dateModified" datetime="2018-12-05T10:10:19+08:00">2018-12-05</time>
               
             
           </span>
@@ -465,15 +477,121 @@
 </li>
 </ul>
 <h1 id="Event"><a href="#Event" class="headerlink" title="Event"></a>Event</h1><ul>
-<li>class asyncio.<strong>Event(*,loop=None)</strong><ul>
+<li><p>class asyncio.<strong>Event(*,loop=None)</strong></p>
+<ul>
 <li>事件对象，非线程安全。</li>
 <li>用于向asyncio任务通知某些事件已发生。</li>
 <li>事件对象用于管理<code>内部标志</code>。此标志可以通过<code>set()</code>方法设置为<code>True</code>,或通过<code>clear()</code>方法复位为<code>False</code>。<code>wait()</code>方法在该标志设置为<code>True</code>前一直保持阻塞。初始状态下，该标志为<code>False</code>。</li>
-<li>例如：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">waiter</span><span class="params">(event)</span>:</span></span><br><span class="line">     print(<span class="string">'waiting for it ...'</span>)</span><br><span class="line">     <span class="keyword">await</span> event.wait()</span><br><span class="line">     print(<span class="string">'... got it!'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">     <span class="comment"># Create an Event object.</span></span><br><span class="line">     event = asyncio.Event()</span><br><span class="line"></span><br><span class="line">     <span class="comment"># Spawn a Task to wait until 'event' is set.</span></span><br><span class="line">     waiter_task = asyncio.create_task(waiter(event))</span><br><span class="line"></span><br><span class="line">     <span class="comment"># Sleep for 1 second and set the event.</span></span><br><span class="line">     <span class="keyword">await</span> asyncio.sleep(<span class="number">1</span>)</span><br><span class="line">     event.set()</span><br><span class="line"></span><br><span class="line">     <span class="comment"># Wait until the waiter task is finished.</span></span><br><span class="line">     <span class="keyword">await</span> waiter_task</span><br><span class="line"></span><br><span class="line">asyncio.run(main())</span><br></pre></td></tr></table></figure>
+<li><p>例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">waiter</span><span class="params">(event)</span>:</span></span><br><span class="line">     print(<span class="string">'waiting for it ...'</span>)</span><br><span class="line">     <span class="keyword">await</span> event.wait()</span><br><span class="line">     print(<span class="string">'... got it!'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">     <span class="comment"># Create an Event object.</span></span><br><span class="line">     event = asyncio.Event()</span><br><span class="line"></span><br><span class="line">     <span class="comment"># Spawn a Task to wait until 'event' is set.</span></span><br><span class="line">     waiter_task = asyncio.create_task(waiter(event))</span><br><span class="line"></span><br><span class="line">     <span class="comment"># Sleep for 1 second and set the event.</span></span><br><span class="line">     <span class="keyword">await</span> asyncio.sleep(<span class="number">1</span>)</span><br><span class="line">     event.set()</span><br><span class="line"></span><br><span class="line">     <span class="comment"># Wait until the waiter task is finished.</span></span><br><span class="line">     <span class="keyword">await</span> waiter_task</span><br><span class="line"></span><br><span class="line">asyncio.run(main())</span><br></pre></td></tr></table></figure>
 </li>
+<li><p>coroutine <strong>wait()</strong></p>
+<ul>
+<li>等待事件<code>内部标志</code>被设置为<code>True</code>。</li>
+<li>如果事件的内部<code>内部标志</code>已设置，则立即返回<code>True</code>。否则，一直阻塞，直到另外的任务调用<code>set()</code>。</li>
+</ul>
+</li>
+<li><strong>set()</strong><ul>
+<li>设置事件<code>内部标志</code>为<code>True</code>。</li>
+<li>所有等待事件的任务将会立即被触发。</li>
+</ul>
+</li>
+<li><strong>clear()</strong><ul>
+<li>清除事件<code>内部标志</code>（即设置为<code>False</code>）。</li>
+<li>等待事件的任务将会阻塞，直到<code>set()</code>方法被再次调用。</li>
+</ul>
+</li>
+<li><strong>is_set()</strong><ul>
+<li>如果事件<code>内部标志</code>被设置为<code>True</code>，则返回<code>True</code>。</li>
 </ul>
 </li>
 </ul>
+</li>
+</ul>
+<h1 id="Condition"><a href="#Condition" class="headerlink" title="Condition"></a>Condition</h1><ul>
+<li><p>class asyncio.<strong>Condition(lock=None,*,loop=None)</strong></p>
+<ul>
+<li>条件对象，非线程安全。</li>
+<li>异步条件原语用于在某些事件发生后，获得共享资源的独占访问权限。</li>
+<li>本质上，条件对象结合了事件和锁的功能。可以让多个Condition对象共享一个Lock，这允许在对共享资源的特定状态感兴趣的不同任务之间协调对共享资源的独占访问。</li>
+<li>可选参数<code>lock</code>必须为<code>Lock</code>对象或<code>None</code>。如果为<code>None</code>，会自动创建一个<code>Lock</code>对象。</li>
+<li><p>使用条件对象的首选方法是<code>async with</code>方式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cond = asyncio.Condition()</span><br><span class="line"></span><br><span class="line"><span class="comment"># ... later</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">with</span> cond:</span><br><span class="line">    <span class="keyword">await</span> cond.wait()</span><br></pre></td></tr></table></figure>
+<p>等价于：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cond = asyncio.Condition()</span><br><span class="line"></span><br><span class="line"><span class="comment"># ... later</span></span><br><span class="line"><span class="keyword">await</span> lock.acquire()</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">await</span> cond.wait()</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    lock.release()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>coroutine <strong>acquire()</strong></p>
+<ul>
+<li>获取底层锁。</li>
+<li>该方法一直等待，直到底层锁处于未锁定状态，然后设置其为锁定状态，并且返回<code>True</code>。</li>
+</ul>
+</li>
+<li><strong>notify(n=1)</strong><ul>
+<li>唤醒至多<code>n</code>个等待条件的任务。如果没有正在等待的任务，则该方法无操作。</li>
+<li>在调用该方法之前，必须先调用<code>acquire()</code>获取锁，并在调用该方法之后释放锁。如果在锁为锁定的情况下调用此方法，会引发<code>RuntimeError</code>异常。</li>
+</ul>
+</li>
+<li><strong>locked()</strong><ul>
+<li>如果底层锁已获取，则返回<code>True</code>。</li>
+</ul>
+</li>
+<li><strong>notify_all()</strong><ul>
+<li>唤醒所有正在等待该条件的任务。</li>
+<li>该方法与<code>notify()</code>类似，区别只在它会唤醒所有正在等待的任务。</li>
+<li>在调用该方法前，必须首先获取底层锁，并在执行完该方法后释放锁。如果在底层锁为锁定的情况下执行该方法，会引发<code>RuntimeError</code>异常。</li>
+</ul>
+</li>
+<li><strong>release()</strong><ul>
+<li>释放底层锁。</li>
+<li>在未锁定的锁上调用时，会引发<code>RuntimeError</code>异常。</li>
+</ul>
+</li>
+<li>coroutine <strong>wait_for(predicate)</strong><ul>
+<li>等待<code>断言(predicate)</code>变为<code>True</code>。</li>
+<li><code>predicate</code>必须可调用，它的执行结果会被解释为布尔值，并作为最终结果返回。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="Semaphore"><a href="#Semaphore" class="headerlink" title="Semaphore"></a>Semaphore</h1><ul>
+<li><p>class asyncio.<strong>Semaphore(value=1,*,loop=None)</strong></p>
+<ul>
+<li>信号量（Semaphore）对象。非线程安全。</li>
+<li>信号量用于管理一个内部计数器，此计数器逢<code>acquire()</code>递减，逢<code>release()</code>递增。计数器的值不能小于<code>0</code>，如果<code>acquire()</code>被调用时计数器为<code>0</code>，则阻塞，直到某一任务调用<code>release()</code>。</li>
+<li><code>value</code>为可选参数，用于设定内部计数器的初始值。如果给定的值小于0，则引发<code>ValueError</code>异常。</li>
+<li><p>使用<code>信号量</code>的最佳方法是<code>async with</code>声明：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sem = asyncio.Semaphore(<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ... later</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">with</span> sem:</span><br><span class="line">    <span class="comment"># work with shared resource</span></span><br></pre></td></tr></table></figure>
+<p>等价于：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sem = asyncio.Semaphore(<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ... later</span></span><br><span class="line"><span class="keyword">await</span> sem.acquire()</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="comment"># work with shared resource</span></span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    sem.release()</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>coroutine <strong>acquire()</strong></p>
+<ul>
+<li>申请一个信号量</li>
+<li>如果内部计数器的值大于0，则减1并立即返回<code>True</code>。如果内部计数器的值为0，则等待<code>release()</code>被调用，然后返回<code>True</code>。</li>
+</ul>
+</li>
+<li><strong>locked()</strong><ul>
+<li>如果信号量不能被立即申请，则返回<code>True</code>。</li>
+</ul>
+</li>
+<li><strong>release()</strong><ul>
+<li>释放信号量，内部计数器加1。</li>
+<li>与<code>BoundedSemaphore</code>不同，<code>Semaphore</code>允许<code>release()</code>的调用次数大于<code>acquire()</code>的调用次数。</li>
+</ul>
+</li>
+</ul>
+<h1 id="BoundedSemaphore"><a href="#BoundedSemaphore" class="headerlink" title="BoundedSemaphore"></a>BoundedSemaphore</h1><ul>
+<li>class asyncio.<strong>BoundedSemaphore(value=1,*,loop=None)</strong><ul>
+<li>有界信号量，非线程安全。</li>
+<li>有界信号量是一种特殊的信号量——如果<code>release()</code>后内部计数器的值大于初始值，则引发<code>ValueError</code>异常。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>从python3.7开始</strong>：通过<code>await lock</code>、<code>yield from lock</code>或通过声明<code>with await lock</code>、<code>with(yield from lock)</code>获取锁的用法被废弃。可使用<code>async with lock</code>代替。</p>
 
           
         
