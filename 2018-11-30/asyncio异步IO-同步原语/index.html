@@ -115,7 +115,7 @@
 <meta property="og:site_name" content="BiuBiu">
 <meta property="og:description" content="asyncio同步原语与线程（threading）模块同步原语基本类似，但有两点重要区别：  asyncio同步原语非线程安全，因此不应被用作系统线程同步（可以使用threading代替）； asyncio同步原语不允许使用timeout参数；可以使用asyncio.wait_for()方法执行有超时设置的操作。  asyncio有以下5个基本的同步原语：  Lock Event Conditio">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-12-05T02:34:21.035Z">
+<meta property="og:updated_time" content="2018-12-05T02:35:23.131Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="asyncio异步IO--同步原语">
 <meta name="twitter:description" content="asyncio同步原语与线程（threading）模块同步原语基本类似，但有两点重要区别：  asyncio同步原语非线程安全，因此不应被用作系统线程同步（可以使用threading代替）； asyncio同步原语不允许使用timeout参数；可以使用asyncio.wait_for()方法执行有超时设置的操作。  asyncio有以下5个基本的同步原语：  Lock Event Conditio">
@@ -397,7 +397,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-12-05 10:34:21" itemprop="dateModified" datetime="2018-12-05T10:34:21+08:00">2018-12-05</time>
+                <time title="修改时间：2018-12-05 10:35:23" itemprop="dateModified" datetime="2018-12-05T10:35:23+08:00">2018-12-05</time>
               
             
           </span>
@@ -473,11 +473,13 @@
 </ul>
 </li>
 <li><strong>locked()</strong><ul>
-<li>如果<code>锁</code>的状态是<code>locked</code>，则返回<code>True</code>。<h1 id="Event"><a href="#Event" class="headerlink" title="Event"></a>Event</h1></li>
+<li>如果<code>锁</code>的状态是<code>locked</code>，则返回<code>True</code>。</li>
 </ul>
 </li>
 </ul>
 </li>
+</ul>
+<h1 id="Event"><a href="#Event" class="headerlink" title="Event"></a>Event</h1><ul>
 <li><p>class asyncio.<strong>Event(*,loop=None)</strong></p>
 <ul>
 <li>事件对象，非线程安全。</li>
