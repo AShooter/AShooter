@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="近日，有朋友向我求助一件小事儿，他在一个短视频app上看到一个好玩儿的段子，想下载下来，可死活找不到下载的方法。这忙我得帮，少不得就抓包分析了一下这个app，找到了视频的下载链接，帮他解决了这个小问题。 因为这个事儿，勾起了我另一个念头，这不最近一直想把python爬虫方面的知识梳理梳理吗，干脆借机行事，正凑着短视频火热的势头，做一个短视频的爬虫好了，中间用到什么知识就理一理。 我喜欢把事情说得很">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python爬虫实战：利用scrapy，短短50行代码下载整站短视频">
+<meta property="og:url" content="http://ashooter.github.io/2018-12-14/python爬虫实战：利用scrapy，短短50行代码下载整站短视频/index.html">
+<meta property="og:site_name" content="BiuBiu">
+<meta property="og:description" content="近日，有朋友向我求助一件小事儿，他在一个短视频app上看到一个好玩儿的段子，想下载下来，可死活找不到下载的方法。这忙我得帮，少不得就抓包分析了一下这个app，找到了视频的下载链接，帮他解决了这个小问题。 因为这个事儿，勾起了我另一个念头，这不最近一直想把python爬虫方面的知识梳理梳理吗，干脆借机行事，正凑着短视频火热的势头，做一个短视频的爬虫好了，中间用到什么知识就理一理。 我喜欢把事情说得很">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://ashooter.github.io/img/scrapy.png">
+<meta property="og:image" content="http://ashooter.github.io/img/1.png">
+<meta property="og:image" content="http://ashooter.github.io/img/2.png">
+<meta property="og:image" content="http://ashooter.github.io/img/videos.png">
+<meta property="og:updated_time" content="2018-12-14T02:48:05.359Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python爬虫实战：利用scrapy，短短50行代码下载整站短视频">
+<meta name="twitter:description" content="近日，有朋友向我求助一件小事儿，他在一个短视频app上看到一个好玩儿的段子，想下载下来，可死活找不到下载的方法。这忙我得帮，少不得就抓包分析了一下这个app，找到了视频的下载链接，帮他解决了这个小问题。 因为这个事儿，勾起了我另一个念头，这不最近一直想把python爬虫方面的知识梳理梳理吗，干脆借机行事，正凑着短视频火热的势头，做一个短视频的爬虫好了，中间用到什么知识就理一理。 我喜欢把事情说得很">
+<meta name="twitter:image" content="http://ashooter.github.io/img/scrapy.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://ashooter.github.io/2018-12-14/python爬虫实战：利用scrapy，短短50行代码下载整站短视频/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>python爬虫实战：利用scrapy，短短50行代码下载整站短视频 | BiuBiu</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BiuBiu</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Do something amazing.</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ashooter.github.io/2018-12-14/python爬虫实战：利用scrapy，短短50行代码下载整站短视频/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="MingQian">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BiuBiu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">python爬虫实战：利用scrapy，短短50行代码下载整站短视频
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-12-14 10:30:29 / 修改时间：10:48:05" itemprop="dateCreated datePublished" datetime="2018-12-14T10:30:29+08:00">2018-12-14</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>近日，有朋友向我求助一件小事儿，他在一个短视频app上看到一个好玩儿的段子，想下载下来，可死活找不到下载的方法。这忙我得帮，少不得就抓包分析了一下这个app，找到了视频的下载链接，帮他解决了这个小问题。</p>
+<p>因为这个事儿，勾起了我另一个念头，这不最近一直想把python爬虫方面的知识梳理梳理吗，干脆借机行事，正凑着短视频火热的势头，做一个短视频的爬虫好了，中间用到什么知识就理一理。</p>
+<p>我喜欢把事情说得很直白，如果恰好有初入门的朋友想了解爬虫的技术，可以将就看看，或许对你的认识会有提升。如果有高手路过，最好能指点一二，本人不胜感激。<br><a id="more"></a></p>
+<h1 id="爬虫是什么，它能做什么"><a href="#爬虫是什么，它能做什么" class="headerlink" title="爬虫是什么，它能做什么"></a>爬虫是什么，它能做什么</h1><h2 id="爬虫是什么"><a href="#爬虫是什么" class="headerlink" title="爬虫是什么"></a>爬虫是什么</h2><p>爬虫就是一段能够从互联网上高效获取数据的程序。</p>
+<p>我们每天都在从互联网上获取数据。当打开浏览器访问百度的时候，我们就从百度的服务器获取数据，当拿起手机在线听歌的时候，我们就从某个app的服务器上获取数据。简单的归纳，这些过程都可以描述为：我们提交一个Request请求，服务器会返回一个Response数据，应用根据Response来渲染页面，给我们展示数据结果。</p>
+<p>爬虫最核心的也是这个过程，提交Requests——〉接受Response。就这样，很简单，当我们在浏览器里打开一个页面，看到页面内容的时候，我们就可以说这个页面被我们采集到了。</p>
+<p>只不过当我们真正进行数据爬取时，一般会需要采集大量的页面，这就需要提交许多的Requests，需要接受许多的Response。数量大了之后，就会涉及到一些比较复杂的处理，比如并发的，比如请求序列，比如去重，比如链接跟踪，比如数据存储，等等。于是，随着问题的延伸和扩展，爬虫就成为了一个相对独立的技术门类。</p>
+<p>但它的本质就是对一系列网络请求和网络响应的处理。</p>
+<h2 id="爬虫能做什么"><a href="#爬虫能做什么" class="headerlink" title="爬虫能做什么"></a>爬虫能做什么</h2><p>爬虫的作用和目的只有一个，获取网络数据。我们知道，互联网是个数据的海洋，大量的信息漂浮在其中，想把这些资源收归己用，爬虫是最常用的方式。特别是最近几年大树据挖掘技术和机器学习以及知识图谱等技术的兴盛，更是对数据提出了更大的需求。另外也有很多互联网创业公司，在起步初期自身积累数据较少的时候，也会通过爬虫快速获取数据起步。</p>
+<h1 id="scrapy——爬虫开发的利器"><a href="#scrapy——爬虫开发的利器" class="headerlink" title="scrapy——爬虫开发的利器"></a>scrapy——爬虫开发的利器</h1><p>如果你刚刚接触爬虫的概念，我建议你暂时不要使用scrapy框架。或者更宽泛的说，如果你刚刚接触某一个技术门类，我都不建议你直接使用框架，因为框架是对许多基础技术细节的高级抽象，如果你不了解底层实现原理就直接用框架多半会让你云里雾里迷迷糊糊。</p>
+<p>在入门爬虫之初，看scrapy的文档，你会觉得“太复杂了”。当你使用urllib或者Requests开发一个python的爬虫脚本，并逐个去解决了请求头封装、访问并发、队列去重、数据清洗等等问题之后，再回过头来学习scrapy，你会觉得它如此简洁优美，它能节省你大量的时间，它会为一些常见的问题提供成熟的解决方案。</p>
+<h2 id="scrapy数据流程图"><a href="#scrapy数据流程图" class="headerlink" title="scrapy数据流程图"></a>scrapy数据流程图</h2><p>这张图是对scrapy框架的经典描述，一时看不懂没有关系，用一段时间再回来看。或者把本文读完再回来看。<br><img src="/img/scrapy.png" alt="scrapy数据流程图"></p>
+<p>在一些书上会把爬虫的基本抓取流程概括为UR2IM，意思是数据爬取的过程是围绕URL、Request（请求）、Response（响应）、Item（数据项）、MoreUrl（更多的Url）展开的。上图的绿色箭头 体现的正是这几个要素的流转过程。图中涉及的四个模块正是用于处理这几类对象的：</p>
+<ul>
+<li>Spider模块：负责生成Request对象、解析Response对象、输出Item对象</li>
+<li>Scheduler模块：负责对Request对象的调度</li>
+<li>Downloader模块：负责发送Request请求，接收Response响应</li>
+<li>ItemPipleline模块：负责数据的处理</li>
+<li>scrapy Engine负责模块间的通信</li>
+</ul>
+<p>各个模块和scrapy引擎之间可以添加一层或多层中间件，负责对出入该模块的UR2IM对象进行处理。</p>
+<h2 id="scrapy的安装"><a href="#scrapy的安装" class="headerlink" title="scrapy的安装"></a>scrapy的安装</h2><p>参考官方文档，不再赘述。官方文档：<a href="https://scrapy-chs.readthedocs.io/zh_CN/0.24/intro/install.html" target="_blank" rel="noopener">https://scrapy-chs.readthedocs.io/zh_CN/0.24/intro/install.html</a></p>
+<h1 id="scrapy实战：50行代码爬取全站短视频"><a href="#scrapy实战：50行代码爬取全站短视频" class="headerlink" title="scrapy实战：50行代码爬取全站短视频"></a>scrapy实战：50行代码爬取全站短视频</h1><p>python的优雅之处在于能够让开发者专注于业务逻辑，花更少的时间在枯燥的代码编写调试上。scrapy无疑完美诠释了这一精神。</p>
+<p>开发爬虫的一般步骤是：</p>
+<ul>
+<li>确定要爬取的数据（item）</li>
+<li>找到数据所在页面的url</li>
+<li>找到页面间的链接关系，确定如何跟踪（follow）页面</li>
+</ul>
+<p>那么，我们一步一步来。<br>既然是使用scrapy框架，我们先创建项目：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scrapy startproject DFVideo</span><br></pre></td></tr></table></figure></p>
+<p> 紧接着，我们创建一个爬虫：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scrapy genspider -t crawl DfVideoSpider eastday.com</span><br></pre></td></tr></table></figure></p>
+<p>这是我们发现在当前目录下已经自动生成了一个目录：DFVideo</p>
+<p>目录下包括如图文件：<br><img src="/img/1.png" alt="目录"><br>spiders文件夹下，自动生成了名为DfVideoSpider.py的文件。<br><img src="/img/2.png" alt="DfVideoSpider.py"></p>
+<p>爬虫项目创建之后，我们来确定需要爬取的数据。在items.py中编辑：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DfvideoItem</span><span class="params">(scrapy.Item)</span>:</span></span><br><span class="line">    <span class="comment"># define the fields for your item here like:</span></span><br><span class="line">    <span class="comment"># name = scrapy.Field()</span></span><br><span class="line">    video_url = scrapy.Field()<span class="comment">#视频源url</span></span><br><span class="line">    video_title = scrapy.Field()<span class="comment">#视频标题</span></span><br><span class="line">    video_local_path = scrapy.Field()<span class="comment">#视频本地存储路径</span></span><br></pre></td></tr></table></figure></p>
+<p>接下来，我们需要确定视频源的url，这是很关键的一步。</p>
+<p>现在许多的视频播放页面是把视频链接隐藏起来的，这就使得大家无法通过右键另存为，防止了视频别随意下载。</p>
+<p>但是只要视频在页面上播放了，那么必然是要和视频源产生数据交互的，所以只要稍微抓下包就能够发现玄机。</p>
+<p>这里我们使用fiddler抓包分析。</p>
+<p>发现其视频播放页的链接类似于：video.eastday.com/a/180926221513827264568.html?index3lbt</p>
+<p>视频源的数据链接类似于：mvpc.eastday.com/vyule/20180415/20180415213714776507147_1_06400360.mp4</p>
+<p>有了这两个链接，工作就完成了大半：</p>
+<p>在DfVideoSpider.py中编辑<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"><span class="keyword">from</span> scrapy.loader <span class="keyword">import</span> ItemLoader</span><br><span class="line"><span class="keyword">from</span> scrapy.loader.processors <span class="keyword">import</span> MapCompose,Join</span><br><span class="line"><span class="keyword">from</span> DFVideo.items <span class="keyword">import</span> DfvideoItem</span><br><span class="line"><span class="keyword">from</span> scrapy.linkextractors <span class="keyword">import</span> LinkExtractor</span><br><span class="line"><span class="keyword">from</span> scrapy.spiders <span class="keyword">import</span> CrawlSpider, Rule</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> os <span class="keyword">import</span> path</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DfvideospiderSpider</span><span class="params">(CrawlSpider)</span>:</span></span><br><span class="line">    name = <span class="string">'DfVideoSpider'</span></span><br><span class="line">    allowed_domains = [<span class="string">'eastday.com'</span>]</span><br><span class="line">    start_urls = [<span class="string">'http://video.eastday.com/'</span>]</span><br><span class="line"></span><br><span class="line">    rules = (</span><br><span class="line">        Rule(LinkExtractor(allow=<span class="string">r'video.eastday.com/a/\d+.html'</span>),</span><br><span class="line">             callback=<span class="string">'parse_item'</span>, follow=<span class="keyword">True</span>),</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_item</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        item = DfvideoItem()</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            item[<span class="string">"video_url"</span>] = response.xpath(<span class="string">'//input[@id="mp4Source"]/@value'</span>).extract()[<span class="number">0</span>]</span><br><span class="line">            item[<span class="string">"video_title"</span>] = response.xpath(<span class="string">'//meta[@name="description"]/@content'</span>).extract()[<span class="number">0</span>]</span><br><span class="line">            <span class="comment">#print(item)</span></span><br><span class="line">            item[<span class="string">"video_url"</span>] = <span class="string">'http:'</span> + item[<span class="string">'video_url'</span>]</span><br><span class="line">            <span class="keyword">yield</span> scrapy.Request(url=item[<span class="string">'video_url'</span>], meta=item, callback=self.parse_video)</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_video</span><span class="params">(self, response)</span>:</span></span><br><span class="line"></span><br><span class="line">        i = response.meta</span><br><span class="line">        file_name = Join()([i[<span class="string">'video_title'</span>], <span class="string">'.mp4'</span>])</span><br><span class="line">        base_dir = path.join(path.curdir, <span class="string">'VideoDownload'</span>)</span><br><span class="line">        video_local_path = path.join(base_dir, file_name.replace(<span class="string">'?'</span>, <span class="string">''</span>))</span><br><span class="line">        i[<span class="string">'video_local_path'</span>] = video_local_path</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(base_dir):</span><br><span class="line">            os.mkdir(base_dir)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">with</span> open(video_local_path, <span class="string">"wb"</span>) <span class="keyword">as</span> f:</span><br><span class="line">            f.write(response.body)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">yield</span> i</span><br></pre></td></tr></table></figure></p>
+<p>至此，一个简单但强大的爬虫便完成了。</p>
+<p>如果你希望将视频的附加数据保存在数据库，可以在pipeline.py中进行相应的操作，比如存入mongodb中：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scrapy <span class="keyword">import</span> log</span><br><span class="line"><span class="keyword">import</span> pymongo</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DfvideoPipeline</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line"></span><br><span class="line">        self.mongodb = pymongo.MongoClient(host=<span class="string">'127.0.0.1'</span>, port=<span class="number">27017</span>)</span><br><span class="line">        self.db = self.mongodb[<span class="string">"DongFang"</span>]</span><br><span class="line"></span><br><span class="line">        self.feed_set = self.db[<span class="string">"video"</span>]</span><br><span class="line">        <span class="comment"># self.comment_set=self.db[comment_set]</span></span><br><span class="line"></span><br><span class="line">        self.feed_set.create_index(<span class="string">"video_title"</span>, unique=<span class="number">1</span>)</span><br><span class="line">        <span class="comment"># self.comment_set.create_index(comment_index,unique=1)</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">process_item</span><span class="params">(self, item, spider)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            self.feed_set.update(&#123;<span class="string">"video_title"</span>: item[<span class="string">"video_title"</span>]&#125;, item, upsert=<span class="keyword">True</span>)</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            log.msg(message=<span class="string">"dup key: &#123;&#125;"</span>.format(item[<span class="string">"video_title"</span>]), level=log.INFO)</span><br><span class="line">        <span class="keyword">return</span> item</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_close</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.mongodb.close()</span><br></pre></td></tr></table></figure></p>
+<p> 当然，你需要在setting.py中将pipelines打开：<br> <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> ITEM_PIPELINES = &#123;</span><br><span class="line">    <span class="string">'TouTiaoVideo.pipelines.ToutiaovideoPipeline'</span>: <span class="number">300</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="执行结果展示"><a href="#执行结果展示" class="headerlink" title="执行结果展示"></a>执行结果展示</h1><p>视频文件：<br><img src="/img/videos.png" alt="视频文件"></p>
+<h1 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h1><p>今天讲了爬虫的一些基础的概念，不深也不透，主要是通过一个案例给大家一个直观的认识。一些细节上的点后续会专门开文细讲，喜欢的朋友可以关注，一起探讨。</p>
+<p>本文所公布代码仅作为学习交流之用，请勿用于非法用途，负责后果自负。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018-11-30/asyncio异步IO-同步原语/" rel="next" title="asyncio异步IO--同步原语">
+                <i class="fa fa-chevron-left"></i> asyncio异步IO--同步原语
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">MingQian</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#爬虫是什么，它能做什么"><span class="nav-number">1.</span> <span class="nav-text">爬虫是什么，它能做什么</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#爬虫是什么"><span class="nav-number">1.1.</span> <span class="nav-text">爬虫是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#爬虫能做什么"><span class="nav-number">1.2.</span> <span class="nav-text">爬虫能做什么</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#scrapy——爬虫开发的利器"><span class="nav-number">2.</span> <span class="nav-text">scrapy——爬虫开发的利器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#scrapy数据流程图"><span class="nav-number">2.1.</span> <span class="nav-text">scrapy数据流程图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#scrapy的安装"><span class="nav-number">2.2.</span> <span class="nav-text">scrapy的安装</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#scrapy实战：50行代码爬取全站短视频"><span class="nav-number">3.</span> <span class="nav-text">scrapy实战：50行代码爬取全站短视频</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#执行结果展示"><span class="nav-number">4.</span> <span class="nav-text">执行结果展示</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#最后"><span class="nav-number">5.</span> <span class="nav-text">最后</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MingQian</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v6.5.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="总访客量">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="总访问量">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
